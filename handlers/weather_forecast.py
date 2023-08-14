@@ -17,7 +17,6 @@ thunderstorm_group = ['thunderstorm with light rain', 'thunderstorm with rain',
                       'thunderstorm', 'heavy thunderstorm',
                       'ragged thunderstorm', 'thunderstorm with light drizzle',
                       'thunderstorm with drizzle', 'thunderstorm with heavy drizzle']
-# 5
 
 drizzle_group = ['light intensity drizzle', 'drizzle',
                  'heavy intensity drizzle', 'light intensity drizzle rain',
@@ -25,42 +24,35 @@ drizzle_group = ['light intensity drizzle', 'drizzle',
                  'shower rain and drizzle', 'heavy shower rain and drizzle',
                  'shower drizzle', 'light intensity shower rain', 'shower rain',
                  'heavy intensity shower rain', 'ragged shower rain']
-# 3
 
 rain_group_1 = ['light rain', 'moderate rain', 'heavy intensity rain', 'very heavy rain',
                 'extreme rain']
-# 4
 
 snow_group = ['light snow', 'snow', 'heavy snow', 'sleet', 'light shower sleet',
               'shower sleet', 'light rain and snow', 'rain and snow',
               'light shower snow', 'shower snow', 'heavy shower snow',
               'freezing rain']
-# 6
 
 atmosphere_group = ['mist', 'smoke', 'haze', 'sand/dust whirls', 'fog', 'sand',
                     'dust', 'volcanic ash', 'squalls', 'tornado']
-# 7
 
 clear_group = ['clear sky']
-# 0
 
 clouds_group_1 = ['few clouds: 11-25%']
-# 1
 
 clouds_group_2 = ['scattered clouds', 'broken clouds',
                   'overcast clouds']
 
 
-# 2
-
 async def main_function(call: types.CallbackQuery):
-    try:
-        user_id = call.from_user.username
-        data = [str(i) for i in cursor.execute(f"SELECT city FROM users WHERE id='{user_id}'").fetchall()]
-        city = data[0].replace('(\'', '').replace("\',)", "")
+    user_id = call.from_user.username
+    data = cursor.execute(f"SELECT city FROM users WHERE id='{user_id}'").fetchall()[0]
+    city = data[0]
+    print(city)
+    if city is not None:
         text = get_weather(city, api_key)
         await call.message.answer(f'{text}')
-    except Exception as ex:
+    else:
         await call.message.answer("Укажите город!")
 
 
@@ -96,7 +88,7 @@ def get_weather(city, api_key):
                f"💨ㅤ—ㅤ{'%.1f' % wind_speed} м/с\n"
         return text
     except Exception as ex:
-        return "Ошибка! Попробуйте позже"
+        return "Увы, но я не смог найти такой город :("
 
 
 def register_handlers_main_function(dp: Dispatcher):

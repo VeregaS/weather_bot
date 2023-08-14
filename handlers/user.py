@@ -15,10 +15,11 @@ class User_Dates(StatesGroup):
 async def start(message: types.Message):
     id = [str(i) for i in cursor.execute("SELECT id FROM users").fetchall()]
     user_id = message.from_user.username
+    user_name = message.from_user.id
     user_id_check = f'(\'{user_id}\',)'
     if user_id_check not in id:
-        cursor.execute('INSERT INTO users (id) VALUES (?)',
-                       (user_id, ))
+        cursor.execute('INSERT INTO users (id, name) VALUES (?, ?)',
+                       (user_id, user_name))
         conn.commit()
     keyboard = main_keyboard.main_keyboard_def()
     await message.answer(f"Привет, @{user_id}!\n",
