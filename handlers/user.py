@@ -27,7 +27,9 @@ async def start(message: types.Message):
 
 
 async def help(message: types.Message):
-    await message.answer("pass")
+    await message.answer("· Для того чтобы поменять город, перейдите в \"Профиль\" и нажмите на \"Указать город\"!\n\n"
+                         "· После этого, когда у Вас выбран город, Вы можете узнать погоду в нём, нажав на кнопку "
+                         "\"Прогноз погоды\"!")
 
 
 def register_handlers_user(dp: Dispatcher):
