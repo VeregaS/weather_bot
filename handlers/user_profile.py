@@ -12,7 +12,6 @@ async def profile_main_page(call: types.CallbackQuery):
     user_id = call.from_user.username
     user_name = call.from_user.id
     data = cursor.execute(f"SELECT id, city, name FROM users WHERE id='{user_id}'").fetchall()[0]
-    print(data)
     tg = data[0]
     city = data[1]
     name = data[2]
